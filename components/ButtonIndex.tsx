@@ -5,7 +5,6 @@ interface Props {
 
 }
 
-
 export default function ButtonIndex({title}: Props) { // destructuring
     return (
         <>
@@ -20,6 +19,6 @@ const styles = StyleSheet.create({
     buttonContainer: {
         width: '50%',
         marginHorizontal: 'auto',
-        marginRight: '43%',
+        marginRight: '25%',
     }
 })

@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: "hidden",
     width: "60%",
+    maxWidth: 200
   },
   buttonContainer: {
     width: "100%",

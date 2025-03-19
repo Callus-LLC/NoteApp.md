@@ -1,41 +1,105 @@
-import { Text, View, SafeAreaView, StyleSheet } from "react-native";
-import { Stack } from "expo-router";
+import { View, StyleSheet, useColorScheme, ScrollView } from "react-native";
+import { Stack, Link } from "expo-router";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons"; // for icons
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // custom imports
-import ButtonIndex from "@/components/CreateNoteButton";
+import ArrowButton from "@/components/ArrowButton";
+import { Colors } from "@/constants/Colors";
+import TitleInput from "@/components/TitleInput";
+import NoteArea from "@/components/NoteArea";
 
 export default function Index() {
-  return (
-    <SafeAreaView>
-      <Stack.Screen name="/note" options={{ headerShown: false }} />
+  const colorScheme = useColorScheme();
 
-      <View style={styles.screen}>
-        <Text style={styles.header}>This is your first note</Text>
-        <ButtonIndex title="Delete note"></ButtonIndex>
-        <ButtonIndex title="Save note"></ButtonIndex>
-        <ButtonIndex title="Share note"></ButtonIndex>
-        <ButtonIndex title="Go back"></ButtonIndex>
+  const styles = createStyles(colorScheme);
+  return (
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor:
+          colorScheme === "light" ? Colors.light.primary : Colors.dark.primary,
+      }}
+    >
+      <Stack.Screen name="/index" options={{ headerShown: false }} />
+      <View style={styles.titleContainer}>
+        <View style={styles.titleTopPartContainer}>
+          <Link href=".." asChild>
+            <ArrowButton></ArrowButton>
+          </Link>
+
+          <TitleInput></TitleInput>
+        </View>
+
+        <View style={styles.titleBottomBar}></View>
       </View>
+      <ScrollView>
+        <NoteArea></NoteArea>
+      </ScrollView>
+      <View style={styles.screen}></View>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  screen: {
-    backgroundColor: "#222",
-    height: "100%",
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+// type declaration
+type ColorScheme = "light" | "dark" | undefined | null;
 
-  header: {
-    fontSize: 40,
-    fontWeight: "bold",
-    color: "#f9f8f1",
-    marginBottom: 50,
-    marginRight: "25%",
-  },
-});
+// styles
+function createStyles(colorScheme: ColorScheme) {
+  return StyleSheet.create({
+    screen: {
+      backgroundColor:
+        colorScheme === "light" ? Colors.light.primary : Colors.dark.primary,
+      height: "100%",
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+
+    header: {
+      fontSize: 40,
+      fontWeight: "bold",
+      color: "#f9f8f1",
+      marginBottom: 50,
+      marginRight: "25%",
+    },
+
+    titleContainer: {
+      backgroundColor:
+        colorScheme === "light" ? Colors.light.primary : Colors.dark.primary,
+      width: "100%",
+    },
+
+    titleBottomBar: {
+      height: 1,
+      width: "90%",
+      backgroundColor:
+        colorScheme === "light"
+          ? Colors.light.quaternary
+          : Colors.dark.quaternary,
+      marginHorizontal: "auto",
+      marginTop: 10,
+    },
+
+    titleTopPartContainer: {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      paddingHorizontal: 0,
+      paddingLeft: 50,
+    },
+
+    titleArrowContainer: {
+      width: 50,
+      height: 50,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: 50,
+      overflow: "hidden",
+    },
+  });
+}

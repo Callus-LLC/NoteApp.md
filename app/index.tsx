@@ -16,33 +16,23 @@ import { Colors } from "@/constants/Colors";
 export default function Index() {
   const colorScheme = useColorScheme(); // get theme
 
+  const styles = createStyles(colorScheme);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Stack.Screen name="/index" options={{ headerShown: false }} />
 
-      <View
-        style={[
-          styles.screen,
-          {
-            backgroundColor:
-              colorScheme === "light"
-                ? Colors.light.primary
-                : Colors.dark.primary,
-          },
-        ]}
-      >
+      <View style={styles.screen}>
+        <Text style={styles.header}>Welcome to NoteApp.md</Text>
         <Text
           style={[
-            styles.header,
+            styles.headerSecondary,
             {
-              color:
-                colorScheme === "light"
-                  ? Colors.light.secondary
-                  : Colors.dark.secondary,
+              color: Colors.light.tertiary,
             },
           ]}
         >
-          Welcome to NoteApp.md
+          Your new minimalist note-taking app assistant
         </Text>
         <Link href={"/note"} asChild>
           <CreateNoteButton title="Create a note"></CreateNoteButton>
@@ -52,26 +42,39 @@ export default function Index() {
   );
 }
 
-const styles = StyleSheet.create({
-  screen: {
-    // backgroundColor:
-    //   useColorScheme() === "light" ? Colors.light.primary : Colors.dark.primary,
-    height: "100%",
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "center",
-    padding: 20,
-  },
+type ColorScheme = "light" | "dark" | undefined | null;
 
-  header: {
-    fontSize: 40,
-    fontWeight: "bold",
-    // color:
-    //   colorScheme === "light"
-    //     ? Colors.light.secondary
-    //     : Colors.dark.secondary,
-    marginBottom: 20,
-  },
-});
+function createStyles(colorScheme: ColorScheme) {
+  return StyleSheet.create({
+    screen: {
+      backgroundColor:
+        useColorScheme() === "light"
+          ? Colors.light.primary
+          : Colors.dark.primary,
+      height: "100%",
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-start",
+      justifyContent: "center",
+      padding: 20,
+    },
+
+    header: {
+      fontSize: 40,
+      fontWeight: "bold",
+      color:
+        colorScheme === "light"
+          ? Colors.light.secondary
+          : Colors.dark.secondary,
+    },
+
+    headerSecondary: {
+      fontSize: 20,
+      fontWeight: "300",
+      fontStyle: "italic",
+      marginBottom: 30,
+      maxWidth: 300,
+    },
+  });
+}

@@ -2,7 +2,7 @@ import { Text, View, SafeAreaView, StyleSheet } from "react-native";
 import { Stack } from "expo-router";
 
 // custom imports
-import ButtonIndex from "@/components/ButtonIndex";
+import ButtonIndex from "@/components/CreateNoteButton";
 
 export default function Index() {
   return (

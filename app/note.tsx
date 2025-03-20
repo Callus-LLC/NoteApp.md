@@ -33,10 +33,7 @@ export default function Index() {
 
         <View style={styles.titleBottomBar}></View>
       </View>
-      <ScrollView>
-        <NoteArea></NoteArea>
-      </ScrollView>
-      <View style={styles.screen}></View>
+      <NoteArea></NoteArea>
     </SafeAreaView>
   );
 }
@@ -89,7 +86,7 @@ function createStyles(colorScheme: ColorScheme) {
       alignItems: "center",
       justifyContent: "center",
       paddingHorizontal: 0,
-      paddingLeft: 50,
+      paddingLeft: "6%",
     },
 
     titleArrowContainer: {

@@ -3,7 +3,7 @@ import {
   StyleSheet,
   View,
   Platform,
-  TouchableNativeFeedback,
+  Dimensions,
 } from "react-native";
 import { useState } from "react";
 import { useColorScheme } from "react-native";
@@ -18,8 +18,15 @@ const NoteArea = () => {
 
   const styles = createStyles(colorScheme, Platform);
 
+  // window width
+  const windowWidth = Dimensions.get("window").width;
+
   return (
-    <View style={styles.noteContainer}>
+    <View
+      style={
+        windowWidth > 400 ? styles.noteContainer : styles.noteContainerSmall
+      }
+    >
       <LinearGradient
         colors={[
           colorScheme === "light" ? Colors.light.quinary : Colors.dark.quinary,
@@ -86,6 +93,29 @@ function createStyles(colorScheme: ColorScheme, platform: PlatformType) {
           : undefined,
     },
 
+    noteContainerSmall: {
+      borderColor:
+        colorScheme === "light"
+          ? Colors.light.secondary
+          : Colors.dark.secondary,
+      borderWidth: 1,
+      borderStyle: "solid",
+      borderRadius: 20,
+      backgroundColor:
+        colorScheme === "light" ? Colors.light.quinary : Colors.dark.quinary,
+      height: "85%",
+      width: "92%",
+      marginHorizontal: "auto",
+      marginTop: 20,
+      overflow: "hidden",
+      elevation:
+        platform.OS === "android"
+          ? colorScheme === "light"
+            ? 5
+            : 10
+          : undefined,
+    },
+
     noteInputArea: {
       width: "90%",
       minHeight: 60,
@@ -103,7 +133,7 @@ function createStyles(colorScheme: ColorScheme, platform: PlatformType) {
       bottom: 30,
       left: 0,
       right: 0,
-      height: 50, // Height of the fade effect
+      height: 10, // Height of the fade effect
     },
 
     gradientTop: {

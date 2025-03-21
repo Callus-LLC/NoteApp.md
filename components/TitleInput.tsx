@@ -43,7 +43,7 @@ function createStyles(colorScheme: ColorScheme) {
         colorScheme === "light"
           ? Colors.light.secondary
           : Colors.dark.secondary,
-      width: "80%",
+      width: "60%",
       paddingHorizontal: 10,
       marginRight: "auto",
       marginLeft: 10,

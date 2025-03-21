@@ -1,4 +1,4 @@
-import { View, StyleSheet, useColorScheme, ScrollView } from "react-native";
+import { View, StyleSheet, useColorScheme, Dimensions } from "react-native";
 import { Stack, Link } from "expo-router";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons"; // for icons
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -8,11 +8,20 @@ import ArrowButton from "@/components/ArrowButton";
 import { Colors } from "@/constants/Colors";
 import TitleInput from "@/components/TitleInput";
 import NoteArea from "@/components/NoteArea";
+import SaveButton from "@/components/SaveButton";
 
 export default function Index() {
   const colorScheme = useColorScheme();
 
   const styles = createStyles(colorScheme);
+
+  // screen width
+  const windowWidth = Dimensions.get("window").width;
+
+  // handle press save button
+  const handlePressSave = () => {
+    alert("Your note has been saved!");
+  };
   return (
     <SafeAreaView
       style={{
@@ -29,6 +38,7 @@ export default function Index() {
           </Link>
 
           <TitleInput></TitleInput>
+          <SaveButton onPress={handlePressSave}></SaveButton>
         </View>
 
         <View style={styles.titleBottomBar}></View>
@@ -85,8 +95,7 @@ function createStyles(colorScheme: ColorScheme) {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
-      paddingHorizontal: 0,
-      paddingLeft: "6%",
+      paddingHorizontal: "6%",
     },
 
     titleArrowContainer: {

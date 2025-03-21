@@ -47,7 +47,7 @@ const SaveButton = ({ onPress }: Props) => {
           <View style={styles.innerContainerSmall}>
             <MaterialIcons
               name="save"
-              size={30}
+              size={25}
               color={
                 colorScheme === "light"
                   ? Colors.light.secondary
@@ -73,7 +73,7 @@ function CreateStyles(colorScheme: ColorScheme, platform: any) {
       overflow: "hidden",
       borderRadius: 10,
       width: 100,
-      height: 50,
+      height: 45,
       elevation:
         platform.OS === "android"
           ? colorScheme === "light"
@@ -89,8 +89,8 @@ function CreateStyles(colorScheme: ColorScheme, platform: any) {
       justifyContent: "center",
       overflow: "hidden",
       borderRadius: 50,
-      width: 50,
-      height: 50,
+      width: 40,
+      height: 40,
       elevation:
         platform.OS === "android"
           ? colorScheme === "light"

@@ -30,12 +30,10 @@ export default function Index() {
           colorScheme === "light" ? Colors.light.primary : Colors.dark.primary,
       }}
     >
-      <Stack.Screen name="/index" options={{ headerShown: false }} />
+      <Stack.Screen name="/note" options={{ headerShown: false }} />
       <View style={styles.titleContainer}>
         <View style={styles.titleTopPartContainer}>
-          <Link href=".." asChild>
-            <ArrowButton></ArrowButton>
-          </Link>
+          <ArrowButton></ArrowButton>
 
           <TitleInput></TitleInput>
           <SaveButton onPress={handlePressSave}></SaveButton>

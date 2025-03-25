@@ -6,21 +6,39 @@ import {
   Pressable,
   useColorScheme,
 } from "react-native";
-import { Stack, Link, Redirect } from "expo-router";
+import { Stack, Link } from "expo-router";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons"; // for icons
 
 // custom imports
 import CreateNoteButton from "@/components/CreateNoteButton"; // create note button import (takes 1 argument)
 import { Colors } from "@/constants/Colors";
 
-export default function Index() {
-  const colorScheme = useColorScheme();
+export default function Home() {
+  const colorScheme = useColorScheme(); // get theme
+
   const styles = createStyles(colorScheme);
+
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Stack.Screen name="/index" options={{ headerShown: false }} />
-      <Redirect href="/stack/home" />
-    </View>
+
+      <View style={styles.screen}>
+        <Text style={styles.header}>Welcome to NoteApp.md</Text>
+        <Text
+          style={[
+            styles.headerSecondary,
+            {
+              color: Colors.light.tertiary,
+            },
+          ]}
+        >
+          Your new minimalist note-taking app assistant
+        </Text>
+        <Link href={"/stack/note"} asChild>
+          <CreateNoteButton title="Create a note"></CreateNoteButton>
+        </Link>
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -37,6 +55,7 @@ function createStyles(colorScheme: ColorScheme) {
       flexDirection: "column",
       alignItems: "flex-start",
       justifyContent: "center",
+      padding: 20,
     },
 
     header: {

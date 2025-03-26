@@ -15,6 +15,7 @@ import { Colors } from "@/constants/Colors";
 const NoteArea = () => {
   const colorScheme = useColorScheme();
   const [height, setHeight] = useState(40); // Initial height
+  const [text, setText] = useState("");
 
   const styles = createStyles(colorScheme, Platform);
 

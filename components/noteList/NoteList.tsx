@@ -1,60 +1,31 @@
-import { Colors } from "@/constants/Colors";
 import {
   DrawerNavigationState,
   ParamListBase,
   NavigationHelpers,
 } from "@react-navigation/native";
 import { StyleSheet, Text, useColorScheme, View, FlatList } from "react-native";
-import NoteListItem from "@/components/NoteListItem";
+import { useContext } from "react";
+import { LinearGradient } from "expo-linear-gradient";
+
+// custom imports
+import NoteListItem from "@/components/noteList/NoteListItem";
+import Search from "@/components/drawer/Search";
+import Data from "@/constants/Data";
+import { Colors } from "@/constants/Colors";
+import { NoteListContext } from "@/context/NoteListContext";
+import NoteListItemNotFound from "@/components/noteList/NoteListItemNotFound";
 
 interface NoteListProps {
   state: DrawerNavigationState<ParamListBase>;
   navigation: NavigationHelpers<ParamListBase>;
   descriptors: any; // Replace 'any' with the correct type if known
 }
-
-const DATA_NOTES = [
-  {
-    title: "This is a long title, so long that",
-    id: 1,
-  },
-  {
-    title: "Note 2",
-    id: 2,
-  },
-  {
-    title: "Note 3",
-    id: 3,
-  },
-  {
-    title: "Note 4",
-    id: 4,
-  },
-  {
-    title: "Note 5",
-    id: 5,
-  },
-  {
-    title: "Note 6",
-    id: 6,
-  },
-  {
-    title: "Note 7",
-    id: 7,
-  },
-  {
-    title: "Note 8",
-    id: 8,
-  },
-  {
-    title: "Note 9",
-    id: 9,
-  },
-];
-
 export default function NoteList() {
   const colorScheme = useColorScheme();
   const styles = createStyles(colorScheme);
+  const { noteList, setNoteList } = useContext(NoteListContext);
+
+  // const dataList =
   return (
     <View style={styles.container}>
       <Text
@@ -71,16 +42,45 @@ export default function NoteList() {
       >
         NoteApp.md
       </Text>
+      <Search></Search>
       <View style={styles.barContainer}>
         <Text style={styles.barText}>Notes</Text>
         <View style={styles.bar}></View>
       </View>
-      <View>
+      <View style={styles.containerChild}>
+        <LinearGradient
+          colors={[
+            colorScheme === "light"
+              ? Colors.light.primary
+              : Colors.dark.primary,
+            "transparent",
+          ]} // Transparent to white fade
+          style={styles.gradientTop}
+        />
         <FlatList
-          data={DATA_NOTES}
-          renderItem={({ item }) => <NoteListItem title={item.title} />}
+          data={
+            noteList.length > 0
+              ? noteList
+              : [{ id: 0, title: "No such file found" }]
+          }
+          renderItem={({ item }) =>
+            item.title !== "No such file found" ? (
+              <NoteListItem title={item.title} />
+            ) : (
+              <NoteListItemNotFound></NoteListItemNotFound>
+            )
+          }
           keyExtractor={(note) => note.id.toString()}
         ></FlatList>
+        <LinearGradient
+          colors={[
+            "transparent",
+            colorScheme === "light"
+              ? Colors.light.primary
+              : Colors.dark.primary,
+          ]} // Transparent to white fade
+          style={styles.gradientBottom}
+        />
       </View>
     </View>
   );
@@ -93,13 +93,18 @@ function createStyles(colorScheme: ColorScheme) {
   return StyleSheet.create({
     container: {
       width: "100%",
-      height: "80%",
+      height: "70%",
+      minHeight: 500,
       marginHorizontal: "auto",
       marginTop: 50,
       color:
         colorScheme === "light"
           ? Colors.light.secondary
           : Colors.dark.secondary,
+    },
+
+    containerChild: { 
+      minHeight: 300 
     },
 
     text: {
@@ -149,6 +154,24 @@ function createStyles(colorScheme: ColorScheme) {
       marginVertical: "auto",
       marginLeft: "10%",
       marginRight: "auto",
+    },
+
+    gradientTop: {
+      position: "absolute",
+      left: 0,
+      right: 0,
+      top: 0,
+      height: 10, // Height of the fade effect
+      zIndex: 1,
+    },
+
+    gradientBottom: {
+      position: "absolute",
+      left: 0,
+      right: 0,
+      bottom: -1,
+      height: 100, // Height of the fade effect
+      zIndex: 1,
     },
   });
 }

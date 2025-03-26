@@ -3,11 +3,11 @@ import { Stack } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // custom imports
-import ArrowButton from "@/components/ArrowButton";
+import ArrowButton from "@/components/notePage/ArrowButton";
 import { Colors } from "@/constants/Colors";
-import TitleInput from "@/components/TitleInput";
-import NoteArea from "@/components/NoteArea";
-import SaveButton from "@/components/SaveButton";
+import TitleInput from "@/components/notePage/TitleInput";
+import NoteArea from "@/components/notePage/NoteArea";
+import SaveButton from "@/components/notePage/SaveButton";
 
 export default function Index() {
   const colorScheme = useColorScheme();

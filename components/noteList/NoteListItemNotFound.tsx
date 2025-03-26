@@ -9,7 +9,7 @@ import { Colors } from "@/constants/Colors";
 import { Link } from "expo-router";
 
 type NoteListItemProps = {
-  title: string;
+  title?: string;
   onPress?: () => void;
 };
 
@@ -17,30 +17,28 @@ const NoteListItem = ({ title, onPress }: NoteListItemProps) => {
   const colorScheme = useColorScheme();
   const styles = createStyles(colorScheme);
 
-  const checkTitleLength = (text: string) => {
-    const newText = text.length <= 20 ? text : text.slice(0, 20) + "...";
+  const checkTitleLength = (text: string = "No such file found") => {
+    const newText = text.length <= 30 ? text : text.slice(0, 30) + "...";
     return newText;
   };
 
   return (
     <View style={styles.containerMajor}>
-      <Link href={"/stack/note"} asChild>
-        <TouchableNativeFeedback
-          background={TouchableNativeFeedback.Ripple(
-            colorScheme === "light"
-              ? Colors.light.tertiary
-              : Colors.dark.tertiary,
-            false
-          )}
-          onPress={onPress}
-        >
-          <View style={styles.container}>
-            <Text style={[styles.text, styles.noteText]}>
-              {checkTitleLength(title)}
-            </Text>
-          </View>
-        </TouchableNativeFeedback>
-      </Link>
+      <TouchableNativeFeedback
+        background={TouchableNativeFeedback.Ripple(
+          colorScheme === "light"
+            ? Colors.light.tertiary
+            : Colors.dark.tertiary,
+          false
+        )}
+        onPress={onPress}
+      >
+        <View style={styles.container}>
+          <Text style={[styles.text, styles.noteText]}>
+            {checkTitleLength(title)}
+          </Text>
+        </View>
+      </TouchableNativeFeedback>
     </View>
   );
 };

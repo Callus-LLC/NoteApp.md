@@ -13,9 +13,6 @@ export default function searchNoteUtils(text: string, data: DataType) {
   const slicedText = text.split(/\s+/); // Split on any whitespace
   const slicedQuery = data.map(element => element.title.toLowerCase().split(/\s+/));
 
-  const matchByWord = data.filter((_, index) => 
-    slicedText.some(word => slicedQuery[index].includes(word)) // Now checks only within the correct title
-  );
 
   const countMatchByWord = (list = slicedQuery, words = slicedText) => {
     return list.map((element) => element.reduce((count: number, word) => {

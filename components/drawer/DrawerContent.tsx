@@ -3,7 +3,8 @@ import { View, StyleSheet, useColorScheme } from "react-native";
 
 // custom import
 import { Colors } from "@/constants/Colors";
-import NoteList from "@/components/noteList/NoteList";
+import NoteList from "@/components/drawer/noteList/NoteList";
+import CreateNewNoteButton from "@/components/drawer/createNewNoteButton";
 
 const DrawerContent = () => {
   const colorScheme = useColorScheme();
@@ -11,6 +12,7 @@ const DrawerContent = () => {
   return (
     <View style={styles.container}>
       <NoteList></NoteList>
+      <CreateNewNoteButton></CreateNewNoteButton>
     </View>
   );
 };

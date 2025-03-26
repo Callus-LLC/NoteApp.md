@@ -80,6 +80,7 @@ function CreateStyles(colorScheme: ColorScheme, platform: any) {
             ? 5
             : 10
           : undefined,
+      marginRight: "5%",
     },
 
     containerSmall: {
@@ -97,6 +98,7 @@ function CreateStyles(colorScheme: ColorScheme, platform: any) {
             ? 5
             : 10
           : undefined,
+      marginRight: "5%",
     },
 
     text: {

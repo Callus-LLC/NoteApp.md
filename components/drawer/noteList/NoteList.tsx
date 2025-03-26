@@ -3,17 +3,23 @@ import {
   ParamListBase,
   NavigationHelpers,
 } from "@react-navigation/native";
-import { StyleSheet, Text, useColorScheme, View, FlatList } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+  FlatList,
+  useWindowDimensions,
+} from "react-native";
 import { useContext } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 
 // custom imports
-import NoteListItem from "@/components/noteList/NoteListItem";
+import NoteListItem from "@/components/drawer/noteList/NoteListItem";
 import Search from "@/components/drawer/Search";
-import Data from "@/constants/Data";
 import { Colors } from "@/constants/Colors";
 import { NoteListContext } from "@/context/NoteListContext";
-import NoteListItemNotFound from "@/components/noteList/NoteListItemNotFound";
+import NoteListItemNotFound from "@/components/drawer/noteList/NoteListItemNotFound";
 
 interface NoteListProps {
   state: DrawerNavigationState<ParamListBase>;
@@ -22,7 +28,8 @@ interface NoteListProps {
 }
 export default function NoteList() {
   const colorScheme = useColorScheme();
-  const styles = createStyles(colorScheme);
+  const { height, width } = useWindowDimensions();
+  const styles = createStyles(colorScheme, height);
   const { noteList, setNoteList } = useContext(NoteListContext);
 
   // const dataList =
@@ -65,7 +72,7 @@ export default function NoteList() {
           }
           renderItem={({ item }) =>
             item.title !== "No such file found" ? (
-              <NoteListItem title={item.title} />
+              <NoteListItem title={item.title} id={item.id} />
             ) : (
               <NoteListItemNotFound></NoteListItemNotFound>
             )
@@ -89,12 +96,12 @@ export default function NoteList() {
 // type declaration
 type ColorScheme = "light" | "dark" | undefined | null;
 
-function createStyles(colorScheme: ColorScheme) {
+function createStyles(colorScheme: ColorScheme, y: number) {
   return StyleSheet.create({
     container: {
       width: "100%",
-      height: "70%",
-      minHeight: 500,
+      height: y >= 800 ? "70%" : "65%",
+      minHeight: 400,
       marginHorizontal: "auto",
       marginTop: 50,
       color:
@@ -103,8 +110,8 @@ function createStyles(colorScheme: ColorScheme) {
           : Colors.dark.secondary,
     },
 
-    containerChild: { 
-      minHeight: 300 
+    containerChild: {
+      minHeight: 300,
     },
 
     text: {
@@ -170,7 +177,7 @@ function createStyles(colorScheme: ColorScheme) {
       left: 0,
       right: 0,
       bottom: -1,
-      height: 100, // Height of the fade effect
+      height: 30, // Height of the fade effect
       zIndex: 1,
     },
   });

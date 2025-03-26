@@ -12,6 +12,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons"; // for icons
 // custom imports
 import CreateNoteButton from "@/components/notePage/CreateNoteButton"; // create note button import (takes 1 argument)
 import { Colors } from "@/constants/Colors";
+import Data from "@/constants/Data";
 
 export default function Home() {
   const colorScheme = useColorScheme(); // get theme
@@ -34,7 +35,7 @@ export default function Home() {
         >
           Your new minimalist note-taking app assistant
         </Text>
-        <Link href={"/stack/note"} asChild>
+        <Link href={`/stack/note/${Data[Data.length - 1].id}`} asChild>
           <CreateNoteButton title="Create a note"></CreateNoteButton>
         </Link>
       </View>

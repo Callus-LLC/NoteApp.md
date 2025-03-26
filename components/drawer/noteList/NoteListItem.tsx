@@ -11,9 +11,10 @@ import { Link } from "expo-router";
 type NoteListItemProps = {
   title: string;
   onPress?: () => void;
+  id: number;
 };
 
-const NoteListItem = ({ title, onPress }: NoteListItemProps) => {
+const NoteListItem = ({ title, onPress, id }: NoteListItemProps) => {
   const colorScheme = useColorScheme();
   const styles = createStyles(colorScheme);
 
@@ -24,7 +25,7 @@ const NoteListItem = ({ title, onPress }: NoteListItemProps) => {
 
   return (
     <View style={styles.containerMajor}>
-      <Link href={"/stack/note"} asChild>
+      <Link href={`/stack/note/${id}`} asChild>
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple(
             colorScheme === "light"

@@ -12,10 +12,10 @@ import { LinearGradient } from "expo-linear-gradient"; // import for static fade
 // custom imports
 import { Colors } from "@/constants/Colors";
 
-const NoteArea = () => {
+const NoteArea = ({ content }: { content: string }) => {
   const colorScheme = useColorScheme();
   const [height, setHeight] = useState(40); // Initial height
-  const [text, setText] = useState("");
+  const [text, setText] = useState(content !== undefined ? content : "");
 
   const styles = createStyles(colorScheme, Platform);
 
@@ -40,6 +40,9 @@ const NoteArea = () => {
         <TextInput
           style={styles.noteInputArea}
           multiline
+          value={text}
+          onChangeText={setText}
+          onChange={(e) => (e.nativeEvent.text = text)}
           onContentSizeChange={
             (event) => setHeight(event.nativeEvent.contentSize.height) // Adjust height dynamically
           }
@@ -127,6 +130,7 @@ function createStyles(colorScheme: ColorScheme, platform: PlatformType) {
         colorScheme === "light"
           ? Colors.light.secondary
           : Colors.dark.secondary,
+      lineHeight: 30,
     },
 
     gradientBottom: {

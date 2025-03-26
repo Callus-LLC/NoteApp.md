@@ -4,9 +4,9 @@ import { useState } from "react";
 // custom imports
 import { Colors } from "@/constants/Colors";
 
-const TitleInput = () => {
+const TitleInput = ({ title = "Untitled Note" }: { title: string }) => {
   const colorScheme = useColorScheme();
-  const [titleText, setTitleText] = useState("Untitled Note");
+  const [titleText, setTitleText] = useState(title);
 
   const styles = createStyles(colorScheme);
 
@@ -43,7 +43,7 @@ function createStyles(colorScheme: ColorScheme) {
         colorScheme === "light"
           ? Colors.light.secondary
           : Colors.dark.secondary,
-      width: "60%",
+      width: "70%",
       paddingHorizontal: 10,
       marginRight: "auto",
       marginLeft: 10,

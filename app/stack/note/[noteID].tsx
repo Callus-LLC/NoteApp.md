@@ -1,5 +1,5 @@
 import { View, StyleSheet, useColorScheme, Dimensions } from "react-native";
-import { Stack } from "expo-router";
+import { Stack, useLocalSearchParams, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // custom imports
@@ -8,19 +8,24 @@ import { Colors } from "@/constants/Colors";
 import TitleInput from "@/components/notePage/TitleInput";
 import NoteArea from "@/components/notePage/NoteArea";
 import SaveButton from "@/components/notePage/SaveButton";
+import Data from "@/constants/Data";
 
 export default function Index() {
   const colorScheme = useColorScheme();
-
+  const { noteID } = useLocalSearchParams();
   const styles = createStyles(colorScheme);
 
-  // // screen width
-  // const windowWidth = Dimensions.get("window").width;
-
-  // handle press save button
-  const handlePressSave = () => {
-    alert("Your note has been saved!");
+  // Find the note or use default values
+  const note = Data.find((n) => n.id === Number(noteID)) || {
+    id: Number(noteID),
+    title: "Untitled Note",
+    content: "",
   };
+
+  const handlePressSave = () => {
+    alert(`Your note ${noteID} has been saved!`);
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -33,14 +38,12 @@ export default function Index() {
       <View style={styles.titleContainer}>
         <View style={styles.titleTopPartContainer}>
           <ArrowButton></ArrowButton>
-
-          <TitleInput></TitleInput>
+          <TitleInput title={note.title}></TitleInput>
           <SaveButton onPress={handlePressSave}></SaveButton>
         </View>
-
         <View style={styles.titleBottomBar}></View>
       </View>
-      <NoteArea></NoteArea>
+      <NoteArea content={note.content}></NoteArea>
     </SafeAreaView>
   );
 }

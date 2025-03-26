@@ -16,12 +16,10 @@ export default function RootLayout() {
       <Stack
         screenOptions={{
           headerShown: false,
-          headerStyle: { backgroundColor: "#222" },
-          headerTintColor: "#f9f8f1",
         }}
       >
-        <Stack.Screen name="/stack/index" />
-        <Stack.Screen name="/stack/note" />
+        <Stack.Screen name="home" />
+        <Stack.Screen name="note" />
       </Stack>
     </>
   );

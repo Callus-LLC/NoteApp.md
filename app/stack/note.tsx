@@ -1,6 +1,5 @@
 import { View, StyleSheet, useColorScheme, Dimensions } from "react-native";
-import { Stack, Link } from "expo-router";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons"; // for icons
+import { Stack } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // custom imports
@@ -15,8 +14,8 @@ export default function Index() {
 
   const styles = createStyles(colorScheme);
 
-  // screen width
-  const windowWidth = Dimensions.get("window").width;
+  // // screen width
+  // const windowWidth = Dimensions.get("window").width;
 
   // handle press save button
   const handlePressSave = () => {

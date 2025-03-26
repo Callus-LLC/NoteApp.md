@@ -21,6 +21,19 @@ export default function Root() {
         swipeEdgeWidth: 500,
       }}
       drawerContent={() => <NoteList />}
-    ></Drawer>
+    >
+      <Drawer.Screen
+        name="stack"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="index"
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Drawer>
   );
 }

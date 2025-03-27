@@ -1,18 +1,24 @@
-import React from "react";
-import { View, StyleSheet, useColorScheme } from "react-native";
-
+import { View, StyleSheet } from "react-native";
+import { useContext } from "react";
 // custom import
 import { Colors } from "@/constants/Colors";
 import NoteList from "@/components/drawer/noteList/NoteList";
-import CreateNewNoteButton from "@/components/drawer/createNewNoteButton";
+import CreateNoteButton from "@/components/drawer/noteList/CreateNoteButton";
+import ParameterButton from "./SettingButton";
+
+import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 
 const DrawerContent = () => {
-  const colorScheme = useColorScheme();
+  const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
   const styles = createStyles(colorScheme);
+
   return (
     <View style={styles.container}>
       <NoteList></NoteList>
-      <CreateNewNoteButton></CreateNewNoteButton>
+      <View style={styles.buttonContainer}>
+        <CreateNoteButton title="Create new note"></CreateNoteButton>
+      </View>
+      <ParameterButton></ParameterButton>
     </View>
   );
 };
@@ -26,6 +32,13 @@ function createStyles(colorScheme: ColorScheme) {
         colorScheme === "light" ? Colors.light.primary : Colors.dark.primary,
       width: "100%",
       height: "100%",
+    },
+
+    buttonContainer: {
+      position: "absolute",
+      bottom: 20,
+      left: 20,
+      width: 350,
     },
   });
 }

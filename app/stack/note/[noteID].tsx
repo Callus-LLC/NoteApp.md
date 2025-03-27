@@ -1,6 +1,7 @@
 import { View, StyleSheet, useColorScheme, Dimensions } from "react-native";
 import { Stack, useLocalSearchParams, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useContext } from "react";
 
 // custom imports
 import ArrowButton from "@/components/notePage/ArrowButton";
@@ -9,9 +10,10 @@ import TitleInput from "@/components/notePage/TitleInput";
 import NoteArea from "@/components/notePage/NoteArea";
 import SaveButton from "@/components/notePage/SaveButton";
 import Data from "@/constants/Data";
+import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 
 export default function Index() {
-  const colorScheme = useColorScheme();
+  const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
   const { noteID } = useLocalSearchParams();
   const styles = createStyles(colorScheme);
 

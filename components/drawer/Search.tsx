@@ -1,8 +1,7 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import {
   View,
   TextInput,
-  useColorScheme,
   StyleSheet,
   TouchableOpacity,
   Platform,
@@ -13,9 +12,10 @@ import { Colors } from "@/constants/Colors";
 import searchNoteUtils from "@/utils/searchNoteUtil";
 import Data from "@/constants/Data";
 import { NoteListContext } from "@/context/NoteListContext";
+import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 
 const Search = () => {
-  const colorScheme = useColorScheme();
+  const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
   const styles = createStyles(colorScheme, Platform);
   const [text, setText] = useState("");
   const { noteList, setNoteList } = useContext(NoteListContext);

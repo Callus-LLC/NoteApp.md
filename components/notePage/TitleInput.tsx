@@ -1,18 +1,18 @@
-import { TextInput, StyleSheet, useColorScheme } from "react-native";
-import { useState } from "react";
+import { TextInput, StyleSheet } from "react-native";
+import { useContext, useState } from "react";
 
 // custom imports
 import { Colors } from "@/constants/Colors";
+import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 
 const TitleInput = ({ title = "Untitled Note" }: { title: string }) => {
-  const colorScheme = useColorScheme();
+  const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
   const [titleText, setTitleText] = useState(title);
 
   const styles = createStyles(colorScheme);
 
   return (
     <TextInput
-      // @ts-ignore
       style={styles.titleInput}
       maxLength={45}
       placeholder="Untitled note"
@@ -31,7 +31,7 @@ const TitleInput = ({ title = "Untitled Note" }: { title: string }) => {
 type ColorScheme = "light" | "dark" | undefined | null;
 
 function createStyles(colorScheme: ColorScheme) {
-  return {
+  return StyleSheet.create({
     titleInput: {
       backgroundColor:
         colorScheme === "light" ? Colors.light.primary : Colors.dark.primary,
@@ -50,7 +50,7 @@ function createStyles(colorScheme: ColorScheme) {
       height: 50,
       fontSize: 22,
     },
-  };
+  });
 }
 
 export default TitleInput;

@@ -1,18 +1,18 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useContext } from "react";
 import { View, StyleSheet, TouchableNativeFeedback } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useColorScheme } from "react-native";
 import { Link } from "expo-router";
 
 // custom imports
 import { Colors } from "@/constants/Colors";
+import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 
 interface Props {
   onPress?: () => void;
 }
 
 const ArrowButton = forwardRef<View, Props>(({ onPress }, ref) => {
-  const colorScheme = useColorScheme();
+  const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
 
   const styles = createStyles(colorScheme);
   return (

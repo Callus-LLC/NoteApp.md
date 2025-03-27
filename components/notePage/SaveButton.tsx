@@ -7,18 +7,18 @@ import {
   Dimensions,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useColorScheme } from "react-native";
+import { useContext } from "react";
 
 // custom imports
 import { Colors } from "@/constants/Colors";
+import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 
 interface Props {
   onPress?: () => void;
 }
 
 const SaveButton = ({ onPress }: Props) => {
-  const colorScheme = useColorScheme();
-
+  const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
   const styles = CreateStyles(colorScheme, Platform);
 
   // window width

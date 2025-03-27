@@ -1,41 +1,41 @@
 import {
   View,
-  useColorScheme,
   StyleSheet,
   TouchableNativeFeedback,
+  useWindowDimensions,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
 import { Link } from "expo-router";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useContext } from "react";
 
-// custom imports
+// custom import
 import { Colors } from "@/constants/Colors";
-import Data from "@/constants/Data";
+import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 
-const CreateNewNoteButton = () => {
-  const colorScheme = useColorScheme();
-  const styles = createStyles(colorScheme);
-
-  const newId = Data[Data.length - 1].id + 1;
+const ParameterButton = () => {
+  const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
+  const width = useWindowDimensions().width;
+  const styles = createStyles(colorScheme, width);
 
   return (
     <View style={styles.container}>
-      <Link href={`/stack/note/${newId}`} asChild>
+      <Link href="/stack/settings" asChild>
         <TouchableNativeFeedback
           background={TouchableNativeFeedback.Ripple(
             colorScheme === "light"
-              ? Colors.light.secondary
-              : Colors.dark.secondary,
+              ? Colors.light.tertiary
+              : Colors.dark.tertiary,
             false
           )}
         >
           <View style={styles.innerContainer}>
             <MaterialIcons
               style={styles.icon}
-              name="add"
-              size={35}
+              name="settings"
+              size={40}
               color={
                 colorScheme === "light"
-                  ? Colors.light.primary
+                  ? Colors.light.secondary
                   : Colors.dark.secondary
               }
             ></MaterialIcons>
@@ -46,37 +46,29 @@ const CreateNewNoteButton = () => {
   );
 };
 
-// styles
 type ColorScheme = "light" | "dark" | undefined | null;
 
-const createStyles = (colorScheme: ColorScheme) => {
+function createStyles(colorScheme: ColorScheme, width: number) {
   return StyleSheet.create({
     container: {
-      overflow: "hidden",
-      borderRadius: 50,
-      width: "40%",
-      height: "7%",
-      minHeight: 50,
       position: "absolute",
       bottom: 20,
-      left: 20,
-      zIndex: 1,
+      right: width >= 400 ? "20%" : "6%",
+      borderRadius: 50,
+      overflow: "hidden",
+      backgroundColor: "transparent",
     },
 
     innerContainer: {
-      margin: "auto",
-      padding: 0,
-      width: "100%",
-      height: "100%",
+      width: 50,
+      height: 51,
       borderRadius: 50,
-      backgroundColor:
-        colorScheme === "light" ? Colors.light.tertiary : Colors.dark.tertiary,
     },
 
     icon: {
       margin: "auto",
     },
   });
-};
+}
 
-export default CreateNewNoteButton;
+export default ParameterButton;

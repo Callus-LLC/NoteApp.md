@@ -1,22 +1,14 @@
-import {
-  Text,
-  View,
-  SafeAreaView,
-  StyleSheet,
-  Pressable,
-  useColorScheme,
-} from "react-native";
-import { Stack, Link } from "expo-router";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons"; // for icons
+import { Text, View, SafeAreaView, StyleSheet } from "react-native";
+import { Stack } from "expo-router";
+import { useContext } from "react";
 
 // custom imports
-import CreateNoteButton from "@/components/notePage/CreateNoteButton"; // create note button import (takes 1 argument)
+import CreateNoteButton from "@/components/drawer/noteList/CreateNoteButton"; // create note button import (takes 1 argument)
 import { Colors } from "@/constants/Colors";
-import Data from "@/constants/Data";
+import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 
 export default function Home() {
-  const colorScheme = useColorScheme(); // get theme
-
+  const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
   const styles = createStyles(colorScheme);
 
   return (
@@ -35,9 +27,8 @@ export default function Home() {
         >
           Your new minimalist note-taking app assistant
         </Text>
-        <Link href={`/stack/note/${Data[Data.length - 1].id}`} asChild>
-          <CreateNoteButton title="Create a note"></CreateNoteButton>
-        </Link>
+
+        <CreateNoteButton title="Create a note"></CreateNoteButton>
       </View>
     </SafeAreaView>
   );

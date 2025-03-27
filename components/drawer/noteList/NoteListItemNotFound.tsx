@@ -1,12 +1,7 @@
-import {
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  TouchableNativeFeedback,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableNativeFeedback } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { Link } from "expo-router";
+import { useContext } from "react";
+import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 
 type NoteListItemProps = {
   title?: string;
@@ -14,7 +9,7 @@ type NoteListItemProps = {
 };
 
 const NoteListItem = ({ title, onPress }: NoteListItemProps) => {
-  const colorScheme = useColorScheme();
+  const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
   const styles = createStyles(colorScheme);
 
   const checkTitleLength = (text: string = "No such file found") => {

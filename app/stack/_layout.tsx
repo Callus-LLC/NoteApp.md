@@ -28,6 +28,12 @@ export default function StackLayout() {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="params"
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack>
     </>
   );

@@ -5,15 +5,15 @@ import {
   Platform,
   Dimensions,
 } from "react-native";
-import { useState } from "react";
-import { useColorScheme } from "react-native";
+import { useContext, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient"; // import for static fade effect
 
 // custom imports
 import { Colors } from "@/constants/Colors";
+import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 
 const NoteArea = ({ content }: { content: string }) => {
-  const colorScheme = useColorScheme();
+  const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
   const [height, setHeight] = useState(40); // Initial height
   const [text, setText] = useState(content !== undefined ? content : "");
 

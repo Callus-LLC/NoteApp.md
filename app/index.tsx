@@ -10,7 +10,7 @@ import { Stack, Link, Redirect } from "expo-router";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons"; // for icons
 
 // custom imports
-import CreateNoteButton from "@/components/notePage/CreateNoteButton"; // create note button import (takes 1 argument)
+import CreateNoteButton from "@/components/drawer/noteList/CreateNoteButton"; // create note button import (takes 1 argument)
 import { Colors } from "@/constants/Colors";
 
 export default function Index() {

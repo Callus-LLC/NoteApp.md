@@ -20,6 +20,7 @@ import Search from "@/components/drawer/Search";
 import { Colors } from "@/constants/Colors";
 import { NoteListContext } from "@/context/NoteListContext";
 import NoteListItemNotFound from "@/components/drawer/noteList/NoteListItemNotFound";
+import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 
 interface NoteListProps {
   state: DrawerNavigationState<ParamListBase>;
@@ -27,7 +28,7 @@ interface NoteListProps {
   descriptors: any; // Replace 'any' with the correct type if known
 }
 export default function NoteList() {
-  const colorScheme = useColorScheme();
+  const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
   const { height, width } = useWindowDimensions();
   const styles = createStyles(colorScheme, height);
   const { noteList, setNoteList } = useContext(NoteListContext);

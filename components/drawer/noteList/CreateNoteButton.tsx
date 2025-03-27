@@ -1,10 +1,12 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useContext } from "react";
 import { View, Text, StyleSheet, TouchableNativeFeedback } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useColorScheme } from "react-native";
+import { Link } from "expo-router";
 
 // custom imports
 import { Colors } from "@/constants/Colors";
+import Data from "@/constants/Data";
+import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 
 interface Props {
   title: string;
@@ -12,7 +14,9 @@ interface Props {
 }
 
 const CreateNoteButton = forwardRef<View, Props>(({ title, onPress }, ref) => {
-  const colorScheme = useColorScheme();
+  const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
+
+  const newId = Data[Data.length - 1].id + 1;
 
   // Move dynamic styles inside the component
   const dynamicStyles = StyleSheet.create({
@@ -34,27 +38,29 @@ const CreateNoteButton = forwardRef<View, Props>(({ title, onPress }, ref) => {
 
   return (
     <View ref={ref} style={styles.buttonParentContainer}>
-      <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple("#2c5784", false)}
-        onPress={onPress}
-      >
-        <View
-          style={[
-            styles.buttonContainer, // Base styles
-            dynamicStyles.buttonContainer, // Dynamic styles
-            { display: "flex", flexDirection: "row" }, // Inline only if necessary
-          ]}
+      <Link href={`/stack/note/${newId}`} asChild>
+        <TouchableNativeFeedback
+          background={TouchableNativeFeedback.Ripple("#2c5784", false)}
+          onPress={onPress}
         >
-          <Text style={[styles.buttonText, dynamicStyles.buttonText]}>
-            {title}
-          </Text>
-          <MaterialIcons
-            name="add"
-            size={30}
-            color={dynamicStyles.buttonText.color} // Using dynamic style here
-          />
-        </View>
-      </TouchableNativeFeedback>
+          <View
+            style={[
+              styles.buttonContainer, // Base styles
+              dynamicStyles.buttonContainer, // Dynamic styles
+              { display: "flex", flexDirection: "row" }, // Inline only if necessary
+            ]}
+          >
+            <Text style={[styles.buttonText, dynamicStyles.buttonText]}>
+              {title}
+            </Text>
+            <MaterialIcons
+              name="add"
+              size={30}
+              color={dynamicStyles.buttonText.color} // Using dynamic style here
+            />
+          </View>
+        </TouchableNativeFeedback>
+      </Link>
     </View>
   );
 });
@@ -66,7 +72,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: "hidden",
     width: "60%",
-    maxWidth: 200
+    maxWidth: 200,
   },
   buttonContainer: {
     width: "100%",

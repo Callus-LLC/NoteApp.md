@@ -15,6 +15,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import ModalCenter from "@/components/general/ModalCenter";
 import { ColorSchemeContext } from "@/context/ColorSchemeContext";
+import { FontSizeContext } from "@/context/FontSizeContext";
+import FontSizeType from "@/types/FontSizeType";
 
 type Props = {
   title: string;
@@ -38,10 +40,11 @@ const ParamEntity = ({
   // begining of the function
   const [isEnabled, setIsEnabled] = useState(defaultValue as boolean);
   const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
+  const { fontSize, setFontSize } = useContext(FontSizeContext); // get font size
 
   const width = useWindowDimensions().width;
 
-  const styles = createStyles(colorScheme, Platform, width);
+  const styles = createStyles(colorScheme, Platform, width, fontSize);
   const toggleSwitch = () => setIsEnabled(!isEnabled);
 
   return (
@@ -117,7 +120,12 @@ const ParamEntity = ({
 
 type ColorScheme = "light" | "dark" | undefined | null;
 
-function createStyles(colorScheme: ColorScheme, platform: any, width: number) {
+function createStyles(
+  colorScheme: ColorScheme,
+  platform: any,
+  width: number,
+  textSize: FontSizeType
+) {
   return StyleSheet.create({
     container: {
       width: width >= 400 ? "85%" : "95%",
@@ -149,13 +157,13 @@ function createStyles(colorScheme: ColorScheme, platform: any, width: number) {
         colorScheme === "light"
           ? Colors.light.quaternary
           : Colors.dark.quaternary,
-      fontSize: 16,
+      fontSize: textSize * 0.9,
     },
 
     titleText: {
       color:
         colorScheme === "light" ? Colors.light.tertiary : Colors.dark.tertiary,
-      fontSize: 20,
+      fontSize: textSize * 1.1,
       fontWeight: "500",
     },
 

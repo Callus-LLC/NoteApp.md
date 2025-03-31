@@ -1,21 +1,42 @@
-import { Text, View, StyleSheet } from "react-native";
-import { useContext } from "react";
+import { Text, View, StyleSheet, Appearance } from "react-native";
+import { useContext, useEffect } from "react";
 
 // custom imports
 import { Colors } from "@/constants/Colors";
-import SettingEntity from "@/components/parameters/SettingEntity";
+import SettingEntity from "@/components/settings/SettingEntity";
 import { ColorSchemeContext } from "@/context/ColorSchemeContext";
+import ModalCenter from "@/components/general/ModalCenter";
+import { FontSizeContext } from "@/context/FontSizeContext";
+import FontSizeType from "@/types/FontSizeType";
 
-const params = () => {
+const Settings = () => {
   const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
+  const { fontSize, setFontSize } = useContext(FontSizeContext); // get font size
 
-  const styles = createStyles(colorScheme);
+  useEffect(() => {
+    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+      setColorScheme(colorScheme);
+    });
+
+    return () => subscription.remove(); // Cleanup on unmount
+  }, []);
+
+  const styles = createStyles(colorScheme, fontSize);
+
   return (
     <View style={styles.screen}>
-      <Text style={styles.heading}>Settings</Text>
+      <Text style={[styles.text, styles.heading]}>Settings</Text>
       <View style={styles.headingBar}></View>
 
       <View style={styles.optionsContainer}>
+        <ModalCenter
+          title="Choose a font size"
+          placeholder="Select a font."
+          mode="dropdown"
+          value={fontSize}
+          setValue={setFontSize}
+          sideNote="Choose a font size that suits you best. Be aware that this will affect the whole app."
+        />
         <SettingEntity
           mode="toggle"
           text="Toggle the button to change your theme."
@@ -45,7 +66,7 @@ const params = () => {
 
 type ColorScheme = "light" | "dark" | undefined | null;
 
-function createStyles(colorScheme: ColorScheme) {
+function createStyles(colorScheme: ColorScheme, textSize: FontSizeType) {
   return StyleSheet.create({
     screen: {
       paddingHorizontal: "5%",
@@ -56,8 +77,16 @@ function createStyles(colorScheme: ColorScheme) {
         colorScheme === "light" ? Colors.light.primary : Colors.dark.primary,
     },
 
+    text: {
+      fontSize: textSize,
+      color:
+        colorScheme === "light"
+          ? Colors.light.secondary
+          : Colors.dark.secondary,
+    },
+
     heading: {
-      fontSize: 40,
+      fontSize: textSize * 2.5,
       fontWeight: "bold",
       color:
         colorScheme === "light"
@@ -86,4 +115,4 @@ function createStyles(colorScheme: ColorScheme) {
     },
   });
 }
-export default params;
+export default Settings;

@@ -23,13 +23,7 @@ export default function StackLayout() {
           }}
         />
         <Stack.Screen
-          name="note"
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="params"
+          name="settings"
           options={{
             headerShown: false,
           }}

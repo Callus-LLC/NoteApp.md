@@ -1,13 +1,14 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  Switch,
-  TouchableNativeFeedback,
   Platform,
   useWindowDimensions,
   TouchableOpacity,
+  Animated,
+  Easing,
+  TextInput,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
@@ -19,6 +20,7 @@ import { FontSizeContext } from "@/context/FontSizeContext";
 import FontSizeType from "@/types/FontSizeType";
 
 type Props = {
+  visible: boolean;
   title: string;
   placeholder?: string;
   mode: "edit" | "toggle" | "dropdown";
@@ -26,13 +28,18 @@ type Props = {
   value: string | boolean | number;
   setValue: any;
   sideNote?: string;
+  choices?: { [key: string]: string | number | boolean } | undefined;
 };
 
-const defaultFction = (condition: boolean) => {
+const defaultFction = (
+  condition: boolean,
+  choiceSelection?: { [key: string]: string | number | boolean }
+) => {
   console.log(condition);
 };
 
 const ModalCenter = ({
+  visible,
   title,
   placeholder = "Enter your text",
   fction = defaultFction,
@@ -40,15 +47,66 @@ const ModalCenter = ({
   value,
   setValue,
   sideNote,
+  choices,
 }: Props) => {
-  const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
-  const { fontSize, setFontSize } = useContext(FontSizeContext); // get font size
-  const width = useWindowDimensions().width; // get width of the screen
-  const styles = createStyles(colorScheme, Platform, fontSize, width); // create styles based on theme
+  const { colorScheme } = useContext(ColorSchemeContext);
+  const { fontSize } = useContext(FontSizeContext);
+  const { height, width } = useWindowDimensions();
+  const styles = createStyles(colorScheme, Platform, fontSize, width);
+
+  // Control mounting of the component for animation
+  const [showComponent, setShowComponent] = useState(visible);
+  // Animated value for vertical slide. Start below the screen (e.g., 300 pixels)
+  const slideAnim = useRef(new Animated.Value(300)).current;
+
+  useEffect(() => {
+    if (visible) {
+      setShowComponent(true);
+      // Animate sliding up to its final position (translateY: 0)
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 500,
+        easing: Easing.out(Easing.exp),
+        useNativeDriver: true,
+      }).start();
+    } else {
+      // Animate sliding down out of view then unmount
+      Animated.timing(slideAnim, {
+        toValue: height,
+        duration: 300,
+        useNativeDriver: true,
+        easing: Easing.in(Easing.exp),
+      }).start(() => {
+        setShowComponent(false);
+      });
+    }
+  }, [visible, slideAnim]);
+
+  if (!showComponent) {
+    return null;
+  }
 
   return (
-    <View style={styles.container}>
+    <Animated.View
+      style={[styles.container, { transform: [{ translateY: slideAnim }] }]}
+    >
       <Text style={[styles.text, styles.title]}>{title}</Text>
+      <View style={styles.iconContainerParent}>
+        <TouchableOpacity onPress={() => fction(false)}>
+          <View>
+            <MaterialIcons
+              style={styles.icon}
+              name="close"
+              size={40}
+              color={
+                colorScheme === "light"
+                  ? Colors.light.quaternary
+                  : Colors.dark.secondary
+              }
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
 
       {/* For mode === dropdown */}
       {mode === "dropdown" && (
@@ -58,16 +116,31 @@ const ModalCenter = ({
             onValueChange={(itemValue) => setValue(itemValue)}
             style={[styles.picker, styles.text]}
           >
-            <Picker.Item label="👉 14" value={14} />
-            <Picker.Item label="👉 16" value={16} />
-            <Picker.Item label="👉 18" value={18} />
-            <Picker.Item label="👉 20" value={20} />
-            <Picker.Item label="👉 22" value={22} />
-            <Picker.Item label="👉 24" value={24} />
-            <Picker.Item label="👉 26" value={26} />
+            {Object.entries(choices || {}).map(([key, val]) => (
+              <Picker.Item
+                label={key}
+                value={val}
+                key={key}
+                style={[styles.text]}
+              />
+            ))}
           </Picker>
         </View>
       )}
+
+      {/* For mode === edit */}
+      {mode === "edit" && (
+        <View style={styles.pickerContainer}>
+          <TextInput
+            placeholder={placeholder}
+            value={value?.toString()}
+            onChangeText={(text) => setValue(text)}
+            style={[styles.picker, styles.text]}
+          />
+        </View>
+      )}
+
+      {/* For mode === toggle */}
       <View style={styles.sideNoteContainer}>
         <MaterialIcons
           style={styles.sideNoteIcon}
@@ -78,19 +151,15 @@ const ModalCenter = ({
               ? Colors.light.quaternary
               : Colors.dark.quaternary
           }
-        ></MaterialIcons>
+        />
         <Text style={styles.sideNoteText}>{sideNote}</Text>
       </View>
-    </View>
+    </Animated.View>
   );
 };
 
-// type declaration
-
-type ColorScheme = "light" | "dark" | undefined | null;
-
 function createStyles(
-  colorScheme: ColorScheme,
+  colorScheme: "light" | "dark" | undefined | null,
   platform: any,
   textSize: FontSizeType,
   width: number
@@ -120,7 +189,6 @@ function createStyles(
             : 10
           : undefined,
     },
-
     text: {
       fontSize: textSize,
       color:
@@ -128,15 +196,31 @@ function createStyles(
           ? Colors.light.secondary
           : Colors.dark.secondary,
     },
-
     title: {
       fontSize: textSize * 1.5,
       fontWeight: "bold",
       marginBottom: 10,
-      marginTop: "10%",
+      marginTop: "7%",
       marginLeft: "5%",
     },
-
+    iconContainerParent: {
+      width: 50,
+      height: 50,
+      borderRadius: 50,
+      overflow: "hidden",
+      position: "absolute",
+      top: "10%",
+      right: "5%",
+    },
+    icon: {
+      margin: "auto",
+      elevation:
+        platform.OS === "android"
+          ? colorScheme === "light"
+            ? 5
+            : 10
+          : undefined,
+    },
     sideNoteText: {
       fontSize: textSize,
       color:
@@ -146,11 +230,9 @@ function createStyles(
       marginVertical: "auto",
       paddingLeft: 20,
     },
-
     sideNoteIcon: {
       marginVertical: "auto",
     },
-
     sideNoteContainer: {
       width: "90%",
       height: "30%",
@@ -158,10 +240,9 @@ function createStyles(
       marginBottom: "10%",
       paddingRight: "10%",
       marginHorizontal: "auto",
-      display: "flex",
       flexDirection: "row",
+      alignItems: "center",
     },
-
     pickerContainer: {
       height: 60,
       width: "70%",
@@ -177,7 +258,6 @@ function createStyles(
           : Colors.dark.quaternary,
       borderRadius: 0,
     },
-
     picker: {
       height: "100%",
       width: "100%",

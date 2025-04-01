@@ -10,15 +10,18 @@ import {
 // custom import
 import { Colors } from "@/constants/Colors";
 import searchNoteUtils from "@/utils/searchNoteUtil";
-import Data from "@/constants/Data";
+import Data from "@/constants/data/NoteData";
 import { NoteListContext } from "@/context/NoteListContext";
 import { ColorSchemeContext } from "@/context/ColorSchemeContext";
+import { FontSizeContext } from "@/context/FontSizeContext";
+import FontSizeType from "@/types/FontSizeType";
 
 const Search = () => {
   const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
-  const styles = createStyles(colorScheme, Platform);
   const [text, setText] = useState("");
   const { noteList, setNoteList } = useContext(NoteListContext);
+  const { fontSize, setFontSize } = useContext(FontSizeContext); // get font size
+  const styles = createStyles(colorScheme, Platform, fontSize);
 
   return (
     <TouchableOpacity activeOpacity={0.5}>
@@ -48,7 +51,11 @@ const Search = () => {
 type ColorScheme = "light" | "dark" | undefined | null;
 type PlatformType = any;
 
-function createStyles(colorScheme: ColorScheme, platform: PlatformType) {
+function createStyles(
+  colorScheme: ColorScheme,
+  platform: PlatformType,
+  fontSize: FontSizeType
+) {
   return StyleSheet.create({
     container: {
       marginTop: 10,
@@ -72,6 +79,7 @@ function createStyles(colorScheme: ColorScheme, platform: PlatformType) {
     },
 
     inputArea: {
+      fontSize: fontSize,
       marginVertical: "auto",
       marginLeft: 10,
       color:

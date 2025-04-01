@@ -12,6 +12,8 @@ import { useContext } from "react";
 // custom imports
 import { Colors } from "@/constants/Colors";
 import { ColorSchemeContext } from "@/context/ColorSchemeContext";
+import { FontSizeContext } from "@/context/FontSizeContext";
+import FontSizeType from "@/types/FontSizeType";
 
 interface Props {
   onPress?: () => void;
@@ -19,7 +21,8 @@ interface Props {
 
 const SaveButton = ({ onPress }: Props) => {
   const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
-  const styles = CreateStyles(colorScheme, Platform);
+  const { fontSize, setFontSize } = useContext(FontSizeContext); // get font size
+  const styles = CreateStyles(colorScheme, Platform, fontSize);
 
   // window width
   const windowWidth = Dimensions.get("window").width;
@@ -63,7 +66,11 @@ const SaveButton = ({ onPress }: Props) => {
 
 type ColorScheme = "light" | "dark" | undefined | null;
 
-function CreateStyles(colorScheme: ColorScheme, platform: any) {
+function CreateStyles(
+  colorScheme: ColorScheme,
+  platform: any,
+  fontSize: FontSizeType
+) {
   return StyleSheet.create({
     container: {
       display: "flex",
@@ -106,7 +113,7 @@ function CreateStyles(colorScheme: ColorScheme, platform: any) {
         colorScheme === "light"
           ? Colors.light.secondary
           : Colors.dark.secondary,
-      fontSize: 16,
+      fontSize: fontSize * 0.9,
       fontWeight: "bold",
       marginLeft: 5,
     },

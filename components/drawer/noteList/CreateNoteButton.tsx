@@ -5,8 +5,10 @@ import { Link } from "expo-router";
 
 // custom imports
 import { Colors } from "@/constants/Colors";
-import Data from "@/constants/Data";
+import Data from "@/constants/data/NoteData";
 import { ColorSchemeContext } from "@/context/ColorSchemeContext";
+import { FontSizeContext } from "@/context/FontSizeContext";
+import FontSizeType from "@/types/FontSizeType";
 
 interface Props {
   title: string;
@@ -15,6 +17,7 @@ interface Props {
 
 const CreateNoteButton = forwardRef<View, Props>(({ title, onPress }, ref) => {
   const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
+  const { fontSize, setFontSize } = useContext(FontSizeContext); // get font size
 
   const newId = Data[Data.length - 1].id + 1;
 
@@ -35,6 +38,8 @@ const CreateNoteButton = forwardRef<View, Props>(({ title, onPress }, ref) => {
           : Colors.dark.secondary,
     },
   });
+
+  const styles = createStyle(fontSize); // Create styles based on font size
 
   return (
     <View ref={ref} style={styles.buttonParentContainer}>
@@ -67,25 +72,28 @@ const CreateNoteButton = forwardRef<View, Props>(({ title, onPress }, ref) => {
 
 export default CreateNoteButton;
 
-const styles = StyleSheet.create({
-  buttonParentContainer: {
-    borderRadius: 10,
-    overflow: "hidden",
-    width: "60%",
-    maxWidth: 200,
-  },
-  buttonContainer: {
-    width: "100%",
-    height: 50,
-    marginHorizontal: "auto",
-    marginRight: "25%",
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonText: {
-    fontSize: 20,
-  },
-});
+function createStyle(fontSize: FontSizeType) {
+  return StyleSheet.create({
+    buttonParentContainer: {
+      borderRadius: 10,
+      overflow: "hidden",
+      width: "60%",
+      maxWidth: 200,
+    },
+    buttonContainer: {
+      width: "100%",
+      height: 50,
+      marginHorizontal: "auto",
+      marginRight: "25%",
+      borderWidth: 1,
+      borderStyle: "solid",
+      borderRadius: 10,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    buttonText: {
+      marginBottom: "2%",
+      fontSize: fontSize < 22 ? fontSize * 1.1 : fontSize * 0.9,
+    },
+  });
+}

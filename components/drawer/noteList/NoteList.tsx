@@ -21,6 +21,8 @@ import { Colors } from "@/constants/Colors";
 import { NoteListContext } from "@/context/NoteListContext";
 import NoteListItemNotFound from "@/components/drawer/noteList/NoteListItemNotFound";
 import { ColorSchemeContext } from "@/context/ColorSchemeContext";
+import { FontSizeContext } from "@/context/FontSizeContext";
+import FontSizeType from "@/types/FontSizeType";
 
 interface NoteListProps {
   state: DrawerNavigationState<ParamListBase>;
@@ -30,8 +32,9 @@ interface NoteListProps {
 export default function NoteList() {
   const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
   const { height, width } = useWindowDimensions();
-  const styles = createStyles(colorScheme, height);
+  const { fontSize, setFontSize } = useContext(FontSizeContext); // get font size
   const { noteList, setNoteList } = useContext(NoteListContext);
+  const styles = createStyles(colorScheme, height, fontSize);
 
   // const dataList =
   return (
@@ -97,7 +100,11 @@ export default function NoteList() {
 // type declaration
 type ColorScheme = "light" | "dark" | undefined | null;
 
-function createStyles(colorScheme: ColorScheme, y: number) {
+function createStyles(
+  colorScheme: ColorScheme,
+  y: number,
+  fontSize: FontSizeType
+) {
   return StyleSheet.create({
     container: {
       width: "100%",
@@ -120,11 +127,11 @@ function createStyles(colorScheme: ColorScheme, y: number) {
         colorScheme === "light"
           ? Colors.light.secondary
           : Colors.dark.secondary,
-      fontSize: 18,
+      fontSize: fontSize,
     },
 
     heading: {
-      fontSize: 24,
+      fontSize: fontSize * 1.9,
       fontWeight: "bold",
       marginBottom: 10,
       marginLeft: 25,
@@ -158,7 +165,7 @@ function createStyles(colorScheme: ColorScheme, y: number) {
           ? Colors.light.quaternary
           : Colors.dark.quaternary,
       fontWeight: "500",
-      fontSize: 14,
+      fontSize: fontSize < 20 ? 14 : fontSize * 0.7,
       marginVertical: "auto",
       marginLeft: "10%",
       marginRight: "auto",

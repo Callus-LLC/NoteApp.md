@@ -1,5 +1,5 @@
 import React, { createContext, useState, ReactNode } from "react";
-import Data from "@/constants/Data";
+import Data from "@/constants/data/NoteData";
 import { useColorScheme } from "react-native";
 import FontSizeType from "@/types/FontSizeType";
 

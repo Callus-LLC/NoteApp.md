@@ -1,17 +1,26 @@
 import { Text, View, StyleSheet, Appearance } from "react-native";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 // custom imports
 import { Colors } from "@/constants/Colors";
 import SettingEntity from "@/components/settings/SettingEntity";
 import { ColorSchemeContext } from "@/context/ColorSchemeContext";
-import ModalCenter from "@/components/general/ModalCenter";
+import ModalCenter from "@/components/settings/ModalCenter";
 import { FontSizeContext } from "@/context/FontSizeContext";
 import FontSizeType from "@/types/FontSizeType";
 
 const Settings = () => {
   const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
   const { fontSize, setFontSize } = useContext(FontSizeContext); // get font size
+  const [isModalVisisble, setIsModalVisible] = useState(false); // modal state
+  const [choices, setChoices] = useState<{
+    [key: string]: string | number | boolean;
+  }>({});
+  const [mode, setMode] = useState<"edit" | "dropdown">("dropdown"); // modal mode
+  const [sideNote, setSideNote] = useState<string>(""); // side note for the modal
+  const [placeholder, setPlaceholder] = useState<string>(""); // placeholder for the modal
+  const [value, setValue] = useState<string | boolean | number>(""); // value for the modal
+  const [title, setTitle] = useState<string>(""); // title for the modal
 
   useEffect(() => {
     const subscription = Appearance.addChangeListener(({ colorScheme }) => {
@@ -30,12 +39,15 @@ const Settings = () => {
 
       <View style={styles.optionsContainer}>
         <ModalCenter
-          title="Choose a font size"
-          placeholder="Select a font."
-          mode="dropdown"
-          value={fontSize}
-          setValue={setFontSize}
-          sideNote="Choose a font size that suits you best. Be aware that this will affect the whole app."
+          visible={isModalVisisble}
+          title={title}
+          placeholder={placeholder}
+          mode={mode}
+          value={value}
+          setValue={setValue}
+          sideNote={sideNote}
+          choices={choices}
+          fction={(condition: boolean) => setIsModalVisible(condition)}
         />
         <SettingEntity
           mode="toggle"
@@ -48,6 +60,24 @@ const Settings = () => {
           mode="dropdown"
           text="Chose your prefered font size."
           title="Font Size"
+          fction={({
+            condition,
+            title,
+            value,
+            sideNote,
+            choiceSelection,
+            mode,
+            placeholder,
+          }) => {
+            setIsModalVisible(condition);
+            setChoices(choiceSelection || {});
+          }}
+          choices={{
+            Small: 16,
+            "Medium (recommended)": 18,
+            Large: 20,
+            "Extra Large": 24,
+          }}
         />
         <SettingEntity
           mode="toggle"
@@ -58,6 +88,22 @@ const Settings = () => {
           mode="edit"
           text="Change your password."
           title="Password"
+          fction={({
+            condition,
+            title,
+            value,
+            sideNote,
+            choiceSelection,
+            mode,
+            placeholder,
+          }) => {
+            setIsModalVisible(condition);
+            setMode(mode || "edit");
+            setPlaceholder(placeholder || "Enter your password");
+            setTitle(title || "Password");
+            setSideNote(sideNote || "Be aware of not losing you password!");
+            setValue(value);
+          }}
         />
       </View>
     </View>

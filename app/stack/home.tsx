@@ -6,10 +6,13 @@ import { useContext } from "react";
 import CreateNoteButton from "@/components/drawer/noteList/CreateNoteButton"; // create note button import (takes 1 argument)
 import { Colors } from "@/constants/Colors";
 import { ColorSchemeContext } from "@/context/ColorSchemeContext";
+import { FontSizeContext } from "@/context/FontSizeContext";
+import FontSizeType from "@/types/FontSizeType";
 
 export default function Home() {
   const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
-  const styles = createStyles(colorScheme);
+  const { fontSize, setFontSize } = useContext(FontSizeContext); // get font size
+  const styles = createStyles(colorScheme, fontSize);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -36,7 +39,7 @@ export default function Home() {
 
 type ColorScheme = "light" | "dark" | undefined | null;
 
-function createStyles(colorScheme: ColorScheme) {
+function createStyles(colorScheme: ColorScheme, fontSize: FontSizeType) {
   return StyleSheet.create({
     screen: {
       backgroundColor:
@@ -51,7 +54,7 @@ function createStyles(colorScheme: ColorScheme) {
     },
 
     header: {
-      fontSize: 40,
+      fontSize: fontSize * 2,
       fontWeight: "bold",
       color:
         colorScheme === "light"
@@ -60,7 +63,7 @@ function createStyles(colorScheme: ColorScheme) {
     },
 
     headerSecondary: {
-      fontSize: 20,
+      fontSize: fontSize * 1.2,
       fontWeight: "300",
       fontStyle: "italic",
       marginBottom: 30,

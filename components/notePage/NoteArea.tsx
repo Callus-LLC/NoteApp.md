@@ -11,13 +11,15 @@ import { LinearGradient } from "expo-linear-gradient"; // import for static fade
 // custom imports
 import { Colors } from "@/constants/Colors";
 import { ColorSchemeContext } from "@/context/ColorSchemeContext";
+import { FontSizeContext } from "@/context/FontSizeContext";
+import FontSizeType from "@/types/FontSizeType";
 
 const NoteArea = ({ content }: { content: string }) => {
   const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
   const [height, setHeight] = useState(40); // Initial height
   const [text, setText] = useState(content !== undefined ? content : "");
-
-  const styles = createStyles(colorScheme, Platform);
+  const { fontSize, setFontSize } = useContext(FontSizeContext); // get font size
+  const styles = createStyles(colorScheme, Platform, fontSize);
 
   // window width
   const windowWidth = Dimensions.get("window").width;
@@ -72,7 +74,11 @@ const NoteArea = ({ content }: { content: string }) => {
 type ColorScheme = "light" | "dark" | undefined | null;
 type PlatformType = any;
 
-function createStyles(colorScheme: ColorScheme, platform: PlatformType) {
+function createStyles(
+  colorScheme: ColorScheme,
+  platform: PlatformType,
+  fontSize: FontSizeType
+) {
   return StyleSheet.create({
     noteContainer: {
       borderColor:
@@ -125,7 +131,7 @@ function createStyles(colorScheme: ColorScheme, platform: PlatformType) {
       minHeight: 60,
       marginHorizontal: "auto",
       marginVertical: 20,
-      fontSize: 18,
+      fontSize: fontSize * 1.1,
       color:
         colorScheme === "light"
           ? Colors.light.secondary

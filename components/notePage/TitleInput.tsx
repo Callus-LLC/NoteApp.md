@@ -4,12 +4,15 @@ import { useContext, useState } from "react";
 // custom imports
 import { Colors } from "@/constants/Colors";
 import { ColorSchemeContext } from "@/context/ColorSchemeContext";
+import { FontSizeContext } from "@/context/FontSizeContext";
+import FontSizeType from "@/types/FontSizeType";
 
 const TitleInput = ({ title = "Untitled Note" }: { title: string }) => {
   const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
+  const { fontSize, setFontSize } = useContext(FontSizeContext); // get font size
   const [titleText, setTitleText] = useState(title);
 
-  const styles = createStyles(colorScheme);
+  const styles = createStyles(colorScheme, fontSize); // create styles based on theme
 
   return (
     <TextInput
@@ -30,7 +33,7 @@ const TitleInput = ({ title = "Untitled Note" }: { title: string }) => {
 // type declaration
 type ColorScheme = "light" | "dark" | undefined | null;
 
-function createStyles(colorScheme: ColorScheme) {
+function createStyles(colorScheme: ColorScheme, fontSize: FontSizeType) {
   return StyleSheet.create({
     titleInput: {
       backgroundColor:
@@ -48,7 +51,7 @@ function createStyles(colorScheme: ColorScheme) {
       marginRight: "auto",
       marginLeft: 10,
       height: 50,
-      fontSize: 22,
+      fontSize: fontSize < 26 ? fontSize * 1.5 : fontSize,
     },
   });
 }

@@ -1,7 +1,11 @@
 import { StyleSheet, Text, View, TouchableNativeFeedback } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { useContext } from "react";
+
+// custom imports
 import { ColorSchemeContext } from "@/context/ColorSchemeContext";
+import { FontSizeContext } from "@/context/FontSizeContext";
+import FontSizeType from "@/types/FontSizeType";
 
 type NoteListItemProps = {
   title?: string;
@@ -10,7 +14,8 @@ type NoteListItemProps = {
 
 const NoteListItem = ({ title, onPress }: NoteListItemProps) => {
   const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
-  const styles = createStyles(colorScheme);
+  const { fontSize, setFontSize } = useContext(FontSizeContext); // get font size
+  const styles = createStyles(colorScheme, fontSize);
 
   const checkTitleLength = (text: string = "No such file found") => {
     const newText = text.length <= 30 ? text : text.slice(0, 30) + "...";
@@ -41,26 +46,19 @@ const NoteListItem = ({ title, onPress }: NoteListItemProps) => {
 // type declaration
 type ColorScheme = "light" | "dark" | undefined | null;
 
-function createStyles(colorScheme: ColorScheme) {
+function createStyles(colorScheme: ColorScheme, fontSize: FontSizeType) {
   return StyleSheet.create({
     containerMajor: {
       width: "100%",
       backgroundColor:
         colorScheme === "light" ? Colors.light.primary : Colors.dark.primary,
-      // borderRadius: 10,
-      // borderColor:
-      //   colorScheme === "light"
-      //     ? Colors.light.secondary
-      //     : Colors.dark.secondary,
-      // borderLeftWidth: 1,
-      // borderStyle: "solid",
       overflow: "hidden",
     },
 
     container: {
       width: "100%",
       padding: 5,
-      height: 50,
+      minHeight: 50,
     },
 
     text: {
@@ -68,7 +66,7 @@ function createStyles(colorScheme: ColorScheme) {
         colorScheme === "light"
           ? Colors.light.secondary
           : Colors.dark.secondary,
-      fontSize: 18,
+      fontSize: fontSize,
     },
 
     noteText: {

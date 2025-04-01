@@ -13,20 +13,49 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 // custom imports
 import { Colors } from "@/constants/Colors";
-import ModalCenter from "@/components/general/ModalCenter";
+import ModalCenter from "@/components/settings/ModalCenter";
 import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 import { FontSizeContext } from "@/context/FontSizeContext";
 import FontSizeType from "@/types/FontSizeType";
 
+// type definition
+
+type FunctionPropsType = {
+  condition: boolean;
+  title: string;
+  value: string | boolean | number;
+  sideNote: string;
+  choiceSelection?: { [key: string]: string | number | boolean };
+  mode?: "edit" | "dropdown";
+  placeholder?: string;
+};
+
 type Props = {
   title: string;
   text: string;
+  choices?: { [key: string]: string | number | boolean };
   mode: "edit" | "toggle" | "dropdown";
-  fction?: (condition: boolean) => void;
+  fction?: ({
+    condition,
+    title,
+    value,
+    sideNote,
+    choiceSelection,
+    mode,
+    placeholder,
+  }: FunctionPropsType) => void;
   defaultValue?: string | boolean | number;
 };
 
-const defaultFction = (condition: boolean) => {
+const defaultFction = ({
+  condition,
+  title,
+  value,
+  sideNote,
+  choiceSelection,
+  mode,
+  placeholder,
+}: FunctionPropsType) => {
   console.log(condition);
 };
 
@@ -36,6 +65,7 @@ const ParamEntity = ({
   text,
   fction = defaultFction,
   mode = "toggle",
+  choices = {},
 }: Props) => {
   // begining of the function
   const [isEnabled, setIsEnabled] = useState(defaultValue as boolean);
@@ -81,12 +111,34 @@ const ParamEntity = ({
               }
               onValueChange={toggleSwitch}
               value={isEnabled}
-              onChange={(e) => fction(!isEnabled)}
+              onChange={(e) => fction({
+                condition: !isEnabled,
+                title: title,
+                value: "psd",
+                sideNote: "Default side note", // Replace with actual value
+                choiceSelection: {},
+                mode: "edit",
+                placeholder: "Default placeholder", // Replace with actual value
+              })}
             ></Switch>
           )}
 
           {mode === "edit" && (
-            <TouchableOpacity style={styles.editIcon} activeOpacity={0.5}>
+            <TouchableOpacity
+              style={styles.editIcon}
+              activeOpacity={0.5}
+              onPress={() =>
+                fction({
+                  condition: true,
+                  title: title,
+                  value: "psd",
+                  sideNote: "Default side note", // Replace with actual value
+                  choiceSelection: {},
+                  mode: "edit",
+                  placeholder: "Default placeholder", // Replace with actual value
+                })
+              }
+            >
               <MaterialIcons
                 name="edit"
                 size={40}
@@ -100,7 +152,19 @@ const ParamEntity = ({
           )}
 
           {mode === "dropdown" && (
-            <TouchableOpacity style={styles.editIcon} activeOpacity={0.5}>
+            <TouchableOpacity
+              style={styles.editIcon}
+              activeOpacity={0.5}
+              onPress={() => fction({
+                condition: true,
+                title: title,
+                value: "psd",
+                sideNote: "Default side note", // Replace with actual value
+                choiceSelection: {},
+                mode: "edit",
+                placeholder: "Default placeholder", // Replace with actual value
+              })}
+            >
               <MaterialIcons
                 name="change-circle"
                 size={40}

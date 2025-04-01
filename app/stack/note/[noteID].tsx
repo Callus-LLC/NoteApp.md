@@ -9,7 +9,7 @@ import { Colors } from "@/constants/Colors";
 import TitleInput from "@/components/notePage/TitleInput";
 import NoteArea from "@/components/notePage/NoteArea";
 import SaveButton from "@/components/notePage/SaveButton";
-import Data from "@/constants/Data";
+import Data from "@/constants/data/NoteData";
 import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 
 export default function Index() {

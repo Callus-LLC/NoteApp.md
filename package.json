@@ -20,6 +20,8 @@
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/drawer": "^7.2.1",
     "@react-navigation/native": "^7.0.17",
+    "markdown-it": "14.1.0",
+    "react-native-render-html": "6.3.4",
     "expo": "~52.0.39",
     "expo-blur": "~14.0.3",
     "expo-constants": "~17.0.8",

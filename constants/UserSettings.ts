@@ -1,4 +1,4 @@
-const settings = {
+const UserSettings = {
     theme: {
         darkMode: false,
         fontSize: 16,
@@ -11,4 +11,4 @@ const settings = {
     },
 }
 
-export default settings;
+export default UserSettings;

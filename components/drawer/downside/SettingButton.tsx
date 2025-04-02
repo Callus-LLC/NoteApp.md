@@ -51,6 +51,7 @@ type ColorScheme = "light" | "dark" | undefined | null;
 function createStyles(colorScheme: ColorScheme, width: number) {
   return StyleSheet.create({
     container: {
+      zIndex: 999,
       position: "absolute",
       bottom: 20,
       right: width >= 400 ? "20%" : "6%",

@@ -57,7 +57,7 @@ const ModalCenter = ({
       setShowComponent(true);
       // Animate sliding up to its final position (translateY: 0)
       Animated.timing(slideAnim, {
-        toValue: 0,
+        toValue: width > 400 ? 0 : 80,
         duration: 500,
         easing: Easing.out(Easing.exp),
         useNativeDriver: true,
@@ -127,7 +127,7 @@ const ModalCenter = ({
 
       {/* For mode === edit */}
       {mode === "edit" && (
-        <View style={styles.pickerContainer}>
+        <View style={styles.editContainer}>
           <TextInput
             keyboardType="visible-password"
             placeholder={placeholder}
@@ -138,8 +138,19 @@ const ModalCenter = ({
             }
             value={value?.toString()}
             onChangeText={(text) => setValue(text)}
-            style={[styles.picker, styles.text]}
+            style={[styles.edit, styles.text]}
           />
+          <TouchableOpacity activeOpacity={0.8} style={styles.editButton}>
+            <MaterialIcons
+              name="send"
+              size={30}
+              color={
+                colorScheme === "light"
+                  ? Colors.light.primary
+                  : Colors.dark.secondary
+              }
+            ></MaterialIcons>
+          </TouchableOpacity>
         </View>
       )}
 
@@ -169,8 +180,9 @@ function createStyles(
 ) {
   return StyleSheet.create({
     container: {
-      width: width > 400 ? "90%" : "100%",
-      height: width > 400 ? "40%" : "60%",
+      width: width > 400 ? "90%" : "112%",
+      minHeight: 400,
+      height: width > 400 ? "40%" : "80%",
       borderRadius: 50,
       overflow: "hidden",
       backgroundColor:
@@ -178,7 +190,7 @@ function createStyles(
       position: "absolute",
       zIndex: 100,
       top: width > 400 ? "15%" : "5%",
-      left: width > 400 ? "5%" : 0,
+      left: width > 400 ? "5%" : "-6%",
       borderStyle: "solid",
       borderWidth: 1,
       borderColor:
@@ -205,8 +217,9 @@ function createStyles(
       fontSize: textSize * 1.5,
       fontWeight: "bold",
       marginBottom: 10,
-      marginTop: "7%",
-      marginLeft: "5%",
+      marginTop: "10%",
+      marginLeft: width > 400 ? "5%" : "10%",
+      paddingRight: width > 400 ? "30%" : "40%",
       color:
         colorScheme === "light" ? Colors.light.tertiary : Colors.dark.tertiary,
     },
@@ -217,8 +230,8 @@ function createStyles(
       borderRadius: 50,
       overflow: "hidden",
       position: "absolute",
-      top: "10%",
-      right: "5%",
+      top: width > 400 ? "10%" : "6%",
+      right: width > 400 ? "5%" : "10%",
     },
 
     icon: {
@@ -238,7 +251,7 @@ function createStyles(
           ? Colors.light.quaternary
           : Colors.dark.quaternary,
       marginVertical: "auto",
-      paddingLeft: 20,
+      paddingHorizontal: 20,
     },
 
     sideNoteIcon: {
@@ -249,7 +262,7 @@ function createStyles(
       width: "90%",
       height: "30%",
       marginTop: "auto",
-      marginBottom: "10%",
+      marginBottom: width > 400 ? "10%" : "50%",
       paddingRight: "10%",
       marginHorizontal: "auto",
       flexDirection: "row",
@@ -277,6 +290,45 @@ function createStyles(
       width: "100%",
       backgroundColor:
         colorScheme === "light" ? Colors.light.quinary : Colors.dark.quinary,
+    },
+
+    editContainer: {
+      height: 60,
+      width: "80%",
+      display: "flex",
+      flexDirection: "row",
+      marginHorizontal: "auto",
+      marginTop: "10%",
+      backgroundColor:
+        colorScheme === "light" ? Colors.light.quinary : Colors.dark.quinary,
+      borderStyle: "solid",
+      borderWidth: 1,
+      borderColor:
+        colorScheme === "light"
+          ? Colors.light.secondary
+          : Colors.dark.secondary,
+      borderRadius: 50,
+    },
+
+    edit: {
+      width: "70%",
+      height: "90%",
+      marginVertical: "auto",
+      marginLeft: 10,
+    },
+
+    editButton: {
+      borderRadius: 50,
+      width: 50,
+      height: 50,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      marginVertical: "auto",
+      marginLeft: "auto",
+      marginRight: 5,
+      backgroundColor:
+        colorScheme === "light" ? Colors.light.tertiary : Colors.dark.tertiary,
     },
   });
 }

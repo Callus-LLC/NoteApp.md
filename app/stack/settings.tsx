@@ -71,7 +71,7 @@ const Settings = () => {
             mode,
             placeholder,
           }) => {
-            setColorScheme(condition ? "light" : "dark");
+            setColorScheme(condition ? "dark" : "light");
           }}
           defaultValue={colorScheme === "dark" ? true : false}
           value={colorScheme || "light"}
@@ -79,14 +79,14 @@ const Settings = () => {
         <SettingEntity
           mode="dropdown"
           text="Chose your prefered font size."
-          title="Choose your Font Size"
+          title="Choose Your Font Size"
           value={fontSize}
           sideNote="Be aware that this will change your experience of the app."
           choices={{
             Small: 16,
             "Medium (recommended)": 18,
             Large: 20,
-            "Extra Large": 24,
+            "Extra Large (not for phones)": 24,
           }}
           fction={({
             condition,

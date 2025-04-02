@@ -16,7 +16,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 // custom imports
 import NoteListItem from "@/components/drawer/noteList/NoteListItem";
-import Search from "@/components/drawer/Search";
+import Search from "@/components/drawer/topside/Search";
 import { Colors } from "@/constants/Colors";
 import { NoteListContext } from "@/context/NoteListContext";
 import NoteListItemNotFound from "@/components/drawer/noteList/NoteListItemNotFound";
@@ -39,20 +39,6 @@ export default function NoteList() {
   // const dataList =
   return (
     <View style={styles.container}>
-      <Text
-        style={[
-          styles.text,
-          styles.heading,
-          {
-            color:
-              colorScheme === "light"
-                ? Colors.light.tertiary
-                : Colors.dark.tertiary,
-          },
-        ]}
-      >
-        NoteApp.md
-      </Text>
       <Search></Search>
       <View style={styles.barContainer}>
         <Text style={styles.barText}>Notes</Text>
@@ -108,10 +94,10 @@ function createStyles(
   return StyleSheet.create({
     container: {
       width: "100%",
-      height: y >= 800 ? "70%" : "65%",
+      height: y >= 800 ? "65%" : "55%",
       minHeight: 400,
       marginHorizontal: "auto",
-      marginTop: 50,
+      marginTop: 0,
       color:
         colorScheme === "light"
           ? Colors.light.secondary
@@ -120,21 +106,6 @@ function createStyles(
 
     containerChild: {
       minHeight: 300,
-    },
-
-    text: {
-      color:
-        colorScheme === "light"
-          ? Colors.light.secondary
-          : Colors.dark.secondary,
-      fontSize: fontSize,
-    },
-
-    heading: {
-      fontSize: fontSize * 1.9,
-      fontWeight: "bold",
-      marginBottom: 10,
-      marginLeft: 25,
     },
 
     underline: {

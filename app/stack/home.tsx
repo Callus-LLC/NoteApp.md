@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 import { useContext } from "react";
 
 // custom imports
-import CreateNoteButton from "@/components/drawer/noteList/CreateNoteButton"; // create note button import (takes 1 argument)
+import CreateNoteButton from "@/components/drawer/downside/CreateNoteButton"; // create note button import (takes 1 argument)
 import { Colors } from "@/constants/Colors";
 import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 import { FontSizeContext } from "@/context/FontSizeContext";

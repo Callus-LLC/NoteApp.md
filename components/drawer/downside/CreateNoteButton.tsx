@@ -79,6 +79,7 @@ function createStyle(fontSize: FontSizeType) {
       overflow: "hidden",
       width: "60%",
       maxWidth: 200,
+      zIndex: 999,
     },
     buttonContainer: {
       width: "100%",

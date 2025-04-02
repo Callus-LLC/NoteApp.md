@@ -1,10 +1,13 @@
 import { View, StyleSheet } from "react-native";
 import { useContext } from "react";
+
 // custom import
 import { Colors } from "@/constants/Colors";
 import NoteList from "@/components/drawer/noteList/NoteList";
-import CreateNoteButton from "@/components/drawer/noteList/CreateNoteButton";
-import ParameterButton from "./SettingButton";
+import CreateNoteButton from "@/components/drawer/downside/CreateNoteButton";
+import ParameterButton from "./downside/SettingButton";
+import ProfileButton from "@/components/drawer/topside/ProfileButton";
+import TitleApp from "@/components/drawer/topside/TitleApp";
 
 import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 
@@ -14,6 +17,8 @@ const DrawerContent = () => {
 
   return (
     <View style={styles.container}>
+      <TitleApp></TitleApp>
+      <ProfileButton></ProfileButton>
       <NoteList></NoteList>
       <View style={styles.buttonContainer}>
         <CreateNoteButton title="Create new note"></CreateNoteButton>

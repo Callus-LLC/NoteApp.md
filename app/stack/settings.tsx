@@ -8,6 +8,8 @@ import { ColorSchemeContext } from "@/context/ColorSchemeContext";
 import ModalCenter from "@/components/settings/ModalCenter";
 import { FontSizeContext } from "@/context/FontSizeContext";
 import FontSizeType from "@/types/FontSizeType";
+import usePersona from "@/hooks/usePersona";
+import UserData from "@/constants/data/UserData";
 
 const Settings = () => {
   const { colorScheme, setColorScheme } = useContext(ColorSchemeContext); // get theme
@@ -16,11 +18,15 @@ const Settings = () => {
   const [choices, setChoices] = useState<{
     [key: string]: string | number | boolean;
   }>({});
-  const [mode, setMode] = useState<"edit" | "dropdown">("dropdown"); // modal mode
+  const [mode, setMode] = useState<"edit" | "dropdown" | "toggle">("dropdown"); // modal mode
   const [sideNote, setSideNote] = useState<string>(""); // side note for the modal
   const [placeholder, setPlaceholder] = useState<string>(""); // placeholder for the modal
   const [value, setValue] = useState<string | boolean | number>(""); // value for the modal
   const [title, setTitle] = useState<string>(""); // title for the modal
+
+  const { password } = UserData;
+  const { getUserData, changeUserPassword, verifyUserPassword } =
+    usePersona(UserData);
 
   useEffect(() => {
     const subscription = Appearance.addChangeListener(({ colorScheme }) => {
@@ -38,6 +44,7 @@ const Settings = () => {
       <View style={styles.headingBar}></View>
 
       <View style={styles.optionsContainer}>
+        {/* Modal (pop up) */}
         <ModalCenter
           visible={isModalVisisble}
           title={title}
@@ -49,17 +56,38 @@ const Settings = () => {
           choices={choices}
           fction={(condition: boolean) => setIsModalVisible(condition)}
         />
+
+        {/* Settings entities (boxes) */}
         <SettingEntity
           mode="toggle"
           text="Toggle the button to change your theme."
           title="Dark Theme"
-          fction={(condition) => setColorScheme(condition ? "dark" : "light")}
+          fction={({
+            condition,
+            title,
+            value,
+            sideNote,
+            choiceSelection,
+            mode,
+            placeholder,
+          }) => {
+            setColorScheme(condition ? "light" : "dark");
+          }}
           defaultValue={colorScheme === "dark" ? true : false}
+          value={colorScheme || "light"}
         />
         <SettingEntity
           mode="dropdown"
           text="Chose your prefered font size."
-          title="Font Size"
+          title="Choose your Font Size"
+          value={fontSize}
+          sideNote="Be aware that this will change your experience of the app."
+          choices={{
+            Small: 16,
+            "Medium (recommended)": 18,
+            Large: 20,
+            "Extra Large": 24,
+          }}
           fction={({
             condition,
             title,
@@ -71,23 +99,25 @@ const Settings = () => {
           }) => {
             setIsModalVisible(condition);
             setChoices(choiceSelection || {});
-          }}
-          choices={{
-            Small: 16,
-            "Medium (recommended)": 18,
-            Large: 20,
-            "Extra Large": 24,
+            setTitle(title || "Password");
+            setValue(value);
+            setSideNote(sideNote);
+            setPlaceholder(placeholder || "Enter your password");
+            setMode(mode || "dropdown");
           }}
         />
         <SettingEntity
           mode="toggle"
           text="Toggle the button to enable notifications."
           title="Notifications"
+          value={true}
         />
         <SettingEntity
           mode="edit"
           text="Change your password."
           title="Password"
+          placeholder="e.g. AngeloTheGoat1234"
+          sideNote="Changing your password is definitive. Be aware of knowing it or writing it down somewhere safe"
           fction={({
             condition,
             title,
@@ -104,6 +134,7 @@ const Settings = () => {
             setSideNote(sideNote || "Be aware of not losing you password!");
             setValue(value);
           }}
+          value={password}
         />
       </View>
     </View>

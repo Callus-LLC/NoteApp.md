@@ -26,13 +26,16 @@ type FunctionPropsType = {
   value: string | boolean | number;
   sideNote: string;
   choiceSelection?: { [key: string]: string | number | boolean };
-  mode?: "edit" | "dropdown";
+  mode?: "edit" | "dropdown" | "toggle";
   placeholder?: string;
 };
 
 type Props = {
   title: string;
   text: string;
+  sideNote?: string;
+  placeholder?: string;
+  value: string | boolean | number;
   choices?: { [key: string]: string | number | boolean };
   mode: "edit" | "toggle" | "dropdown";
   fction?: ({
@@ -66,6 +69,9 @@ const ParamEntity = ({
   fction = defaultFction,
   mode = "toggle",
   choices = {},
+  value,
+  placeholder,
+  sideNote,
 }: Props) => {
   // begining of the function
   const [isEnabled, setIsEnabled] = useState(defaultValue as boolean);
@@ -111,15 +117,17 @@ const ParamEntity = ({
               }
               onValueChange={toggleSwitch}
               value={isEnabled}
-              onChange={(e) => fction({
-                condition: !isEnabled,
-                title: title,
-                value: "psd",
-                sideNote: "Default side note", // Replace with actual value
-                choiceSelection: {},
-                mode: "edit",
-                placeholder: "Default placeholder", // Replace with actual value
-              })}
+              onChange={(e) =>
+                fction({
+                  condition: !isEnabled,
+                  title: title,
+                  value: value === "light" ? "dark" : "light",
+                  sideNote: sideNote || "Default side note", // Replace with actual value
+                  choiceSelection: choices || {},
+                  mode: "toggle",
+                  placeholder: placeholder || "Default placeholder", // Replace with actual value
+                })
+              }
             ></Switch>
           )}
 
@@ -131,11 +139,11 @@ const ParamEntity = ({
                 fction({
                   condition: true,
                   title: title,
-                  value: "psd",
-                  sideNote: "Default side note", // Replace with actual value
+                  value: value,
+                  sideNote: sideNote || "Default side note", // Replace with actual value
                   choiceSelection: {},
                   mode: "edit",
-                  placeholder: "Default placeholder", // Replace with actual value
+                  placeholder: placeholder || "Default placeholder", // Replace with actual value
                 })
               }
             >
@@ -155,15 +163,17 @@ const ParamEntity = ({
             <TouchableOpacity
               style={styles.editIcon}
               activeOpacity={0.5}
-              onPress={() => fction({
-                condition: true,
-                title: title,
-                value: "psd",
-                sideNote: "Default side note", // Replace with actual value
-                choiceSelection: {},
-                mode: "edit",
-                placeholder: "Default placeholder", // Replace with actual value
-              })}
+              onPress={() =>
+                fction({
+                  condition: true,
+                  title: title,
+                  value: value,
+                  sideNote: sideNote || "Default side note", // Replace with actual value
+                  choiceSelection: choices,
+                  mode: mode,
+                  placeholder: placeholder, // Replace with actual value
+                })
+              }
             >
               <MaterialIcons
                 name="change-circle"

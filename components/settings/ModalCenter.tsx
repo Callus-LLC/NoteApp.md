@@ -24,25 +24,18 @@ type Props = {
   title: string;
   placeholder?: string;
   mode: "edit" | "toggle" | "dropdown";
-  fction?: (condition: boolean) => void;
+  fction: (condition: boolean) => void;
   value: string | boolean | number;
-  setValue: any;
+  setValue: (val: string | boolean | number) => void;
   sideNote?: string;
   choices?: { [key: string]: string | number | boolean } | undefined;
-};
-
-const defaultFction = (
-  condition: boolean,
-  choiceSelection?: { [key: string]: string | number | boolean }
-) => {
-  console.log(condition);
 };
 
 const ModalCenter = ({
   visible,
   title,
   placeholder = "Enter your text",
-  fction = defaultFction,
+  fction,
   mode = "toggle",
   value,
   setValue,
@@ -50,7 +43,7 @@ const ModalCenter = ({
   choices,
 }: Props) => {
   const { colorScheme } = useContext(ColorSchemeContext);
-  const { fontSize } = useContext(FontSizeContext);
+  const { fontSize, setFontSize } = useContext(FontSizeContext);
   const { height, width } = useWindowDimensions();
   const styles = createStyles(colorScheme, Platform, fontSize, width);
 
@@ -80,7 +73,7 @@ const ModalCenter = ({
         setShowComponent(false);
       });
     }
-  }, [visible, slideAnim]);
+  }, [visible]);
 
   if (!showComponent) {
     return null;
@@ -113,7 +106,11 @@ const ModalCenter = ({
         <View style={styles.pickerContainer}>
           <Picker
             selectedValue={value}
-            onValueChange={(itemValue) => setValue(itemValue)}
+            onValueChange={(itemValue) =>
+              value === fontSize
+                ? setFontSize(itemValue as FontSizeType)
+                : setValue(itemValue)
+            }
             style={[styles.picker, styles.text]}
           >
             {Object.entries(choices || {}).map(([key, val]) => (
@@ -132,7 +129,13 @@ const ModalCenter = ({
       {mode === "edit" && (
         <View style={styles.pickerContainer}>
           <TextInput
+            keyboardType="visible-password"
             placeholder={placeholder}
+            placeholderTextColor={
+              colorScheme === "light"
+                ? Colors.light.quaternary
+                : Colors.dark.quaternary
+            }
             value={value?.toString()}
             onChangeText={(text) => setValue(text)}
             style={[styles.picker, styles.text]}
@@ -189,6 +192,7 @@ function createStyles(
             : 10
           : undefined,
     },
+
     text: {
       fontSize: textSize,
       color:
@@ -196,13 +200,17 @@ function createStyles(
           ? Colors.light.secondary
           : Colors.dark.secondary,
     },
+
     title: {
       fontSize: textSize * 1.5,
       fontWeight: "bold",
       marginBottom: 10,
       marginTop: "7%",
       marginLeft: "5%",
+      color:
+        colorScheme === "light" ? Colors.light.tertiary : Colors.dark.tertiary,
     },
+
     iconContainerParent: {
       width: 50,
       height: 50,
@@ -212,6 +220,7 @@ function createStyles(
       top: "10%",
       right: "5%",
     },
+
     icon: {
       margin: "auto",
       elevation:
@@ -221,6 +230,7 @@ function createStyles(
             : 10
           : undefined,
     },
+
     sideNoteText: {
       fontSize: textSize,
       color:
@@ -230,9 +240,11 @@ function createStyles(
       marginVertical: "auto",
       paddingLeft: 20,
     },
+
     sideNoteIcon: {
       marginVertical: "auto",
     },
+
     sideNoteContainer: {
       width: "90%",
       height: "30%",
@@ -243,6 +255,7 @@ function createStyles(
       flexDirection: "row",
       alignItems: "center",
     },
+
     pickerContainer: {
       height: 60,
       width: "70%",
@@ -258,6 +271,7 @@ function createStyles(
           : Colors.dark.quaternary,
       borderRadius: 0,
     },
+
     picker: {
       height: "100%",
       width: "100%",

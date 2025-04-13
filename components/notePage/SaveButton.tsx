@@ -28,12 +28,12 @@ const SaveButton = ({ onPress }: Props) => {
   const windowWidth = Dimensions.get("window").width;
 
   return (
-    <View style={windowWidth > 400 ? styles.container : styles.containerSmall}>
+    <View style={windowWidth > 450 ? styles.container : styles.containerSmall}>
       <TouchableNativeFeedback
         background={TouchableNativeFeedback.Ripple("#2c5784", false)}
         onPress={onPress}
       >
-        {windowWidth > 400 ? (
+        {windowWidth > 450 ? (
           <View style={styles.innerContainer}>
             <MaterialIcons
               name="save"
